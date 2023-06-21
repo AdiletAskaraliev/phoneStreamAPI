@@ -24,7 +24,7 @@ public class ContactServiceImpl implements ContactService {
         dataBase.getPhones().stream()
                 .filter(phone -> phone.getId() == phoneId)
                 .forEach(phone -> phone.setContact(contact));
-        return "Successfully added";
+        return "Successfully added" + contact.toString();
     }
 
     @Override
@@ -67,9 +67,10 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public void deleteContactByNameFromPhone(int phoneId, String contactName) {
         List<Phone> phones = dataBase.getPhones();
-        for (int i = 0; i < phones.size(); i++) {
-            if (phones.get(i).getId()==phoneId && phones.get(i).getName().equals(contactName)){
-                System.out.println(phones.get(i) == null);
+        for (Phone phone : phones) {
+            if (phone.getId() == phoneId) {
+                List<Contact> contacts = phone.getContacts();
+                contacts.removeIf(contact -> contact.getName().equals(contactName));
             }
         }
     }
